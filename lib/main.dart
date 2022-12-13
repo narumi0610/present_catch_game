@@ -32,32 +32,41 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final Widget = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      body: Center(
-        child: Container(
-          child: GestureDetector(
-            // ドラッグのスタートをタップした直後に設定
-            dragStartBehavior: DragStartBehavior.down,
-            // タップしながら動かしている座標を取得する
-            onPanUpdate: (dragUpdateDetails) {
-              position = dragUpdateDetails.localPosition;
-              setState(() {});
-            },
-            child: Stack(
-              children: [
-                Positioned(
-                  left: position.dx,
-                  top: position.dy,
-                  child: Container(
-                    width: 300,
-                    height: 300,
-                    child: Image.asset('images/present_bag.png'),
-                  ),
-                )
-              ],
+      body: Column(
+        children: [
+          Expanded(flex: 8, child: Container(color: Colors.green)),
+          Expanded(
+            flex: 2,
+            child: Container(
+              child: GestureDetector(
+                // ドラッグのスタートをタップした直後に設定
+                dragStartBehavior: DragStartBehavior.start,
+                // タップしながら動かしている座標を取得する
+                onPanUpdate: (dragUpdateDetails) {
+                  position = dragUpdateDetails.localPosition;
+                  setState(() {});
+                },
+                child: Stack(
+                  children: [
+                    Positioned(
+                      left: position.dx, // TODO 画面幅を移動できる最大値にする
+                      top: position.dy,
+                      child: Container(
+                        width: 300,
+                        height: 300,
+                        child: Image.asset('images/present_bag.png'),
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
