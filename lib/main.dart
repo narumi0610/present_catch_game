@@ -1,9 +1,7 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -12,61 +10,76 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Present Catch Game',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      home: Scaffold(
+        body: const MyStatefulWidget(),
       ),
-      home: const MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class MyStatefulWidget extends StatefulWidget {
+  const MyStatefulWidget({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  var position = const Offset(0, 0);
+class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  var position = 0.0;
+
+  void moveLeft() {
+    position += 10;
+  }
+
+  void moveRight() {
+    position -= 10;
+  }
+
+  KeyEventResult _handleKeyPress(FocusNode node, RawKeyEvent event) {
+    if (event is RawKeyDownEvent) {
+      if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+        setState(() {
+          moveLeft();
+        });
+        return KeyEventResult.handled;
+      } else if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
+        setState(() {
+          moveRight();
+        });
+        return KeyEventResult.handled;
+      }
+    }
+    return KeyEventResult.ignored;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final Widget = MediaQuery.of(context).size.width;
-
-    return Scaffold(
-      body: Column(
-        children: [
-          Expanded(flex: 8, child: Container(color: Colors.green)),
-          Expanded(
-            flex: 2,
-            child: Container(
-              child: GestureDetector(
-                // ドラッグのスタートをタップした直後に設定
-                dragStartBehavior: DragStartBehavior.start,
-                // タップしながら動かしている座標を取得する
-                onPanUpdate: (dragUpdateDetails) {
-                  position = dragUpdateDetails.localPosition;
-                  setState(() {});
-                },
-                child: Stack(
-                  children: [
-                    Positioned(
-                      left: position.dx, // TODO 画面幅を移動できる最大値にする
-                      top: position.dy,
-                      child: Container(
-                        width: 300,
-                        height: 300,
-                        child: Image.asset('images/present_bag.png'),
-                      ),
-                    )
-                  ],
+    return Focus(
+      onKey: _handleKeyPress,
+      debugLabel: 'Button',
+      child: Builder(
+        builder: (BuildContext context) {
+          return Container(
+            color: Colors.pink,
+            width: 700,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                AnimatedPositioned(
+                  duration: const Duration(milliseconds: 400),
+                  right: position, // 位置情報
+                  bottom: 0, // 位置情報
+                  // 動かしたいWidget
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    color: Colors.amber,
+                  ),
                 ),
-              ),
+              ],
             ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
