@@ -26,26 +26,32 @@ class MyStatefulWidget extends StatefulWidget {
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   var position = 0.0;
+  final double stageWidth = 700;
+  final double containerSize = 50;
 
   void moveLeft() {
-    position += 10;
+    if (position < stageWidth - containerSize) {
+      setState(() {
+        position += 10;
+      });
+    }
   }
 
   void moveRight() {
-    position -= 10;
+    if (position > 0) {
+      setState(() {
+        position -= 10;
+      });
+    }
   }
 
   KeyEventResult _handleKeyPress(FocusNode node, RawKeyEvent event) {
     if (event is RawKeyDownEvent) {
       if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
-        setState(() {
-          moveLeft();
-        });
+        moveLeft();
         return KeyEventResult.handled;
       } else if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
-        setState(() {
-          moveRight();
-        });
+        moveRight();
         return KeyEventResult.handled;
       }
     }
@@ -54,32 +60,34 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Focus(
-      onKey: _handleKeyPress,
-      debugLabel: 'Button',
-      child: Builder(
-        builder: (BuildContext context) {
-          return Container(
-            color: Colors.pink,
-            width: 700,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                AnimatedPositioned(
-                  duration: const Duration(milliseconds: 400),
-                  right: position, // 位置情報
-                  bottom: 0, // 位置情報
-                  // 動かしたいWidget
-                  child: Container(
-                    width: 50,
-                    height: 50,
-                    color: Colors.amber,
+    return Center(
+      child: Focus(
+        onKey: _handleKeyPress,
+        debugLabel: 'Button',
+        child: Builder(
+          builder: (BuildContext context) {
+            return Container(
+              color: Colors.pink,
+              width: stageWidth,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  AnimatedPositioned(
+                    duration: const Duration(milliseconds: 400),
+                    right: position, // 位置情報
+                    bottom: 0, // 位置情報
+                    // 動かしたいWidget
+                    child: Container(
+                      width: containerSize,
+                      height: containerSize,
+                      color: Colors.amber,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          );
-        },
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
