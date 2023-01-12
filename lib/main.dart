@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flame/game.dart';
+import 'package:present_catch_game/game/present_catch.dart';
+import 'package:present_catch_game/game/widgets/main_menu_overlay.dart';
 
 void main() => runApp(const MyApp());
 
@@ -10,85 +12,38 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Present Catch Game',
-      home: Scaffold(
-        body: const MyStatefulWidget(),
-      ),
+      home: const MyHomeWidget(),
     );
   }
 }
 
-class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({super.key});
+final Game game = PresentCatch();
+
+class MyHomeWidget extends StatefulWidget {
+  const MyHomeWidget({super.key});
 
   @override
-  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
+  State<MyHomeWidget> createState() => _MyHomeWidgetState();
 }
 
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  var position = 0.0;
-  final double stageWidth = 700;
-  final double containerSize = 50;
-
-  void moveLeft() {
-    if (position < stageWidth - containerSize) {
-      setState(() {
-        position += 10;
-      });
-    }
-  }
-
-  void moveRight() {
-    if (position > 0) {
-      setState(() {
-        position -= 10;
-      });
-    }
-  }
-
-  KeyEventResult _handleKeyPress(FocusNode node, RawKeyEvent event) {
-    if (event is RawKeyDownEvent) {
-      if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
-        moveLeft();
-        return KeyEventResult.handled;
-      } else if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
-        moveRight();
-        return KeyEventResult.handled;
-      }
-    }
-    return KeyEventResult.ignored;
-  }
-
+class _MyHomeWidgetState extends State<MyHomeWidget> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Focus(
-        onKey: _handleKeyPress,
-        debugLabel: 'Button',
-        child: Builder(
-          builder: (BuildContext context) {
-            return Container(
-              color: Colors.pink,
-              width: stageWidth,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  AnimatedPositioned(
-                    duration: const Duration(milliseconds: 400),
-                    right: position, // 位置情報
-                    bottom: 0, // 位置情報
-                    // 動かしたいWidget
-                    child: Container(
-                      width: containerSize,
-                      height: containerSize,
-                      color: Colors.amber,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-      ),
+    return Scaffold(
+      body: Center(child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Container(
+            child: GameWidget(
+              game: game,
+              overlayBuilderMap: <String, Widget Function(BuildContext, Game)>{
+                // 'gameOverlay': (context, game) => GameOverlay(game),
+                'mainMenuOverlay': (context, game) => MainMenuOverlay(game),
+                // 'gameOverOverlay': (context, game) => GameOverOverlay(game),
+              },
+            ),
+          );
+        },
+      )),
     );
   }
 }
