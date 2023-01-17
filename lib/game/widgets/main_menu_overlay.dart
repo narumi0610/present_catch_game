@@ -41,24 +41,18 @@ class _MainMenuOverlayState extends State<MainMenuOverlay> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Doodle Dash',
+                    'Present Catch',
                     style: titleStyle.copyWith(
                       height: .8,
                     ),
                     textAlign: TextAlign.center,
                   ),
                   const WhiteSpace(),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text('Select your character:',
-                        style: Theme.of(context).textTheme.headlineSmall!),
-                  ),
-                  if (!screenHeightIsSmall) const WhiteSpace(height: 30),
-                  if (!screenHeightIsSmall) const WhiteSpace(height: 50),
                   if (!screenHeightIsSmall) const WhiteSpace(height: 50),
                   Center(
                     child: ElevatedButton(
                       onPressed: () async {
+                        game.gameManager.selectCharacter(Character.hand);
                         game.startGame();
                       },
                       style: ButtonStyle(

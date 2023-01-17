@@ -1,16 +1,12 @@
-// Copyright 2022 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:present_catch_game/game/present_catch.dart';
 
-// It won't be a detailed section of the codelab, as its not Flame specific
 // ゲーム全体の状態とスコアリングを記録
 class GameManager extends Component with HasGameRef<PresentCatch> {
   GameManager();
 
+  Character character = Character.hand;
   ValueNotifier<int> score = ValueNotifier(0);
   GameState state = GameState.intro;
 
@@ -25,6 +21,10 @@ class GameManager extends Component with HasGameRef<PresentCatch> {
 
   void increaseScore() {
     score.value++;
+  }
+
+  void selectCharacter(Character selectedCharacter) {
+    character = selectedCharacter;
   }
 }
 
