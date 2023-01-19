@@ -21,6 +21,7 @@ class PresentCatch extends FlameGame
   GameManager gameManager = GameManager();
   ObjectManager objectManager = ObjectManager();
   Player player = Player();
+  int screenBufferSpace = 300;
 
   @override
   Future<void> onLoad() async {
