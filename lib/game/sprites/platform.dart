@@ -28,6 +28,10 @@ enum NormalPlatformState { only }
 class NormalPlatform extends Platform<NormalPlatformState> {
   NormalPlatform({super.position});
 
+  double direction = 1; // 方向
+  final Vector2 _velocity = Vector2.zero();
+  double speed = 120;
+
   final Map<String, Vector2> spriteOptions = {
     'platform_favorite_chocolate': Vector2(115, 84),
     'platform_courtesy_chocolate': Vector2(100, 55),
@@ -48,5 +52,19 @@ class NormalPlatform extends Platform<NormalPlatformState> {
 
     size = spriteOptions[randSprite]!;
     await super.onLoad();
+  }
+
+  void _move(double dt) {
+    direction = 1;
+
+    _velocity.y = direction * speed;
+
+    position += _velocity * dt;
+  }
+
+  @override
+  void update(double dt) {
+    _move(dt);
+    super.update(dt);
   }
 }
