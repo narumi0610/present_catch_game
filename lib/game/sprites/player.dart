@@ -29,6 +29,9 @@ class Player extends SpriteGroupComponent<PlayerState>
   Future<void> onLoad() async {
     await super.onLoad();
 
+    // プレイヤーは円形に近いためCircleにしておく
+    await add(CircleHitbox());
+
     // スプライトアセットをロード
     await _loadCharacterSprites();
     current = PlayerState.center;

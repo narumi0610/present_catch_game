@@ -12,6 +12,12 @@ import '../util/util.dart';
 
 final Random _rand = Random();
 
+/* ObjectManagerについて
+* Componentクラスを継承するとPlatformオブジェクトを生成する
+* プラットフォーム座標の生成
+* 現在のレベルで有効なプラットフォームの判定
+* 古くなったプラットフォームの削除などの処理を行うメソッドを提供
+ */
 class ObjectManager extends Component with HasGameRef<PresentCatch> {
   ObjectManager({
     this.minVerticalDistanceToNextPlatform = 200,
@@ -38,6 +44,8 @@ class ObjectManager extends Component with HasGameRef<PresentCatch> {
         currentX = _generateNextX(100);
         currentY = _generateNextY();
       }
+
+      // ゲームが最初に実行されたとき、_semiRandomPlatformメソッドがスタートプラットフォームを生成し、ゲームに追加するようにする
       _platforms.add(
         _semiRandomPlatform(
           Vector2(
@@ -63,10 +71,11 @@ class ObjectManager extends Component with HasGameRef<PresentCatch> {
     if (topOfLowestPlatform > screenBottom) {
       var newPlatY = _generateNextY();
       var newPlatX = _generateNextX(100);
-      final nextPlat = _semiRandomPlatform(Vector2(newPlatX, newPlatY));
+      final nextPlat =
+          _semiRandomPlatform(Vector2(newPlatX, newPlatY)); // platformを生成する
       add(nextPlat);
 
-      _platforms.add(nextPlat);
+      _platforms.add(nextPlat); // 生成したplatformをゲームに追加(onMountメソッドでも同じことを行う)
 
       gameRef.gameManager.increaseScore();
 
@@ -147,9 +156,9 @@ class ObjectManager extends Component with HasGameRef<PresentCatch> {
     return currentHighestPlatformY - distanceToNextY;
   }
 
+  // Platformを生成する
   Platform _semiRandomPlatform(Vector2 position) {
-    // More on Platforms: Add logic to conditionally return special platforms
-
-    return NormalPlatform(position: position);
+    // TODO FavoriteChocolatePlatformのみ返すようにする。後でさまざまな種類のプラットフォームを返すようにする。
+    return FavoriteChocolatePlatform(position: position);
   }
 }
