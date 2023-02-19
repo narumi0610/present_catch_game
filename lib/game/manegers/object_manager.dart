@@ -77,8 +77,6 @@ class ObjectManager extends Component with HasGameRef<PresentCatch> {
 
       _platforms.add(nextPlat); // 生成したplatformをゲームに追加(onMountメソッドでも同じことを行う)
 
-      gameRef.gameManager.increaseScore();
-
       _cleanupPlatforms();
       // Losing the game: Add call to _maybeAddEnemy()
       // Powerups: Add call to _maybeAddPowerup();

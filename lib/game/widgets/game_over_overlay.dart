@@ -1,4 +1,3 @@
-
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:present_catch_game/game/present_catch.dart';

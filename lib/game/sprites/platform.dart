@@ -77,6 +77,8 @@ class FavoriteChocolatePlatform
     if (other is Player) {
       // プレイヤーと衝突した場合はプラットフォームを消すようにした
       removeFromParent();
+      gameRef.gameManager.increaseScore(); // scoreを増やす
+
     }
   }
 

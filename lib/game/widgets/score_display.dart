@@ -13,8 +13,7 @@ class ScoreDisplay extends StatelessWidget {
     return ValueListenableBuilder(
       valueListenable: (game as PresentCatch).gameManager.score,
       builder: (context, value, child) {
-        return Text('Score: $value',
-            style: Theme.of(context).textTheme.displaySmall!);
+        return Text('Score: $value', style: TextStyle(color: Colors.black));
       },
     );
   }
