@@ -36,9 +36,7 @@ class FavoriteChocolatePlatform
   final Vector2 _velocity = Vector2.zero();
   double speed = 120;
 
-  final Map<String, Vector2> spriteOptions = {
-    'platform_favorite_chocolate': Vector2.all(80)
-  };
+  final Map<String, Vector2> spriteOptions = {'star': Vector2.all(80)};
 
   @override
   Future<void>? onLoad() async {

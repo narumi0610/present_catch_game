@@ -51,7 +51,7 @@ class PresentCatch extends FlameGame
 
   @override
   Color backgroundColor() {
-    return const Color.fromARGB(255, 241, 247, 249);
+    return const Color(0xFFfef3ef);
   }
 
   void initializeGameStart() {

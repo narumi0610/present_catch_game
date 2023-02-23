@@ -9,7 +9,7 @@ class BackGround extends ParallaxComponent<PresentCatch> {
   Future<void> onLoad() async {
     parallax = await gameRef.loadParallax(
       [
-        ParallaxImageData('background.png'),
+        // ParallaxImageData('background.png'),
         // ParallaxImageData('school.png'),
       ],
       fill: LayerFill.width,

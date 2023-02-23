@@ -100,7 +100,7 @@ class Player extends SpriteGroupComponent<PlayerState>
   Future<void> _loadCharacterSprites() async {
     // スプライトアセットのロード
     sprites = <PlayerState, Sprite>{
-      PlayerState.center: await gameRef.loadSprite('hand.png')
+      PlayerState.center: await gameRef.loadSprite('ufo.png')
     };
   }
 }
